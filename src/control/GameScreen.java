@@ -1,0 +1,178 @@
+package control;
+
+import elements.Lolo;
+import elements.PieceL;
+import elements.Element;
+import utils.Consts;
+import utils.Drawing;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Projeto de POO 2019
+ * Baseado em material do Prof. Jose Fernando Junior e Prof. Luiz Eduardo (USP)
+ */
+public class GameScreen extends javax.swing.JFrame implements KeyListener {
+    
+	private Stage stage1;       
+    private final GameController controller = new GameController();
+
+    public GameScreen() {
+        Drawing.setGameScreen(this);
+        initComponents();
+        
+        this.addKeyListener(this);   /*teclado*/
+        
+        /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
+        this.setSize(Consts.NUM_COL * Consts.CELL_SIZE + getInsets().left + getInsets().right,
+                     Consts.NUM_ROW * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
+        System.out.println("dsad");
+        stage1 = new Stage(this);
+        stage1.init();
+        System.out.println(stage1);
+        /*Skull skull = new Skull("caveira.png");
+        skull.setPosition(9, 1);
+        this.addElement(skull);  */
+    }
+    
+    public void addElement(Element elem) {
+    	System.out.println(elem);
+    	System.out.println(stage1);
+        stage1.addElement(elem);
+    }
+    
+    public void removeElement(Element elem) {
+    	stage1.removeElement(elem);
+    }
+    
+    @Override
+    public void paint(Graphics gOld) {
+        Graphics g = getBufferStrategy().getDrawGraphics();
+        
+        /*Criamos um contexto grafico*/
+        Graphics g2 = g.create(getInsets().right, getInsets().top, getWidth() - getInsets().left, getHeight() - getInsets().bottom);
+        
+        /* DESENHA CENARIO
+           Trocar essa parte por uma estrutura mais bem organizada
+           Utilizando a classe Stage
+        */
+        for (int i = 0; i < Consts.NUM_ROW; i++) {
+            for (int j = 0; j < Consts.NUM_COL; j++) {
+                try {
+                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.IMG_PATH + "bricks.png");
+                    g2.drawImage(newImage,
+                            j * Consts.CELL_SIZE, i * Consts.CELL_SIZE, Consts.CELL_SIZE, Consts.CELL_SIZE, null);
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        this.controller.drawAllElements(stage1.getBlocks(), g2);
+        this.controller.processAllElements(stage1.getBlocks());
+        //this.setTitle("-> Cell: " + lolo.getStringPosition());
+        
+        g.dispose();
+        g2.dispose();
+        if (!getBufferStrategy().contentsLost()) {
+            getBufferStrategy().show();
+        }
+    }
+    
+    public void go(GameScreen s) {
+        TimerTask task = new TimerTask() {
+            
+            public void run() {
+                repaint();
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, 0, Consts.DELAY_SCREEN_UPDATE);
+        
+        TimerTask taskDown = new TimerTask() {
+            
+            public void run() {
+            		if(!stage1.getControl().moveDown(stage1.getActualMatrix()) && !stage1.getControl().isOver()) {
+            			stage1.verifyAndKill();
+            			stage1.createNewBlock();        			
+            		} else if (stage1.getControl().isOver()) {
+            			System.out.println("Game over :(");
+            			this.cancel();
+            		}
+            		
+            	}            
+        };
+        Timer timerDown = new Timer();
+        timerDown.schedule(taskDown, 1000, 1000);
+    }
+    
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            //blocos.get(atual).moveUp();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        	if(!stage1.getControl().moveDown(stage1.getActualMatrix())) { 
+        		stage1.verifyAndKill();
+        	}
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        	if(!stage1.getControl().moveLeft(stage1.getActualMatrix())) { 
+    			
+        	}
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        	if(!stage1.getControl().moveRight(stage1.getActualMatrix())) { 
+    			
+        	}
+        }
+
+        
+        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SCC0604 - Pacman");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setLocation(new java.awt.Point(20, 20));
+        setResizable(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+    
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+}
