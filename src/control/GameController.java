@@ -2,6 +2,7 @@ package control;
 
 import elements.Element;
 import elements.Lolo;
+import elements.PieceL;
 import utils.Consts;
 
 import java.awt.Graphics;
@@ -40,15 +41,5 @@ public class GameController {
 		        }
         	}
         }*/
-    }
-    public boolean isValidPosition(ArrayList<Element> elemArray, Element elem){
-        Element elemAux;
-        for(int i = 1; i < elemArray.size(); i++){
-            elemAux = elemArray.get(i);            
-            if(!elemAux.isTransposable())
-                if(elemAux.overlap(elem))
-                    return false;
-        }        
-        return true;
     }
 }

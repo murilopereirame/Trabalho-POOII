@@ -9,25 +9,29 @@ import utils.Consts;
 public class Stage {
 	protected int matrix[][] = new int[Consts.NUM_ROW+4][Consts.NUM_COL];
 	private final ArrayList<Element> blocks = new ArrayList<Element>(); 
+	private final ArrayList<Element> blocks2 = new ArrayList<Element>(); 
 	private final GameScreen gs;
 	private int atual;
 	
-	public Stage(GameScreen s) {
+	public Stage(GameScreen s) {		
 		this.gs = s;			
 	}
 	
 	public void init() {
 		PieceL aux = new PieceL(gs, 0, "red.png");
-		this.addElement(aux);
+		this.addElement(aux);;
 	}
 	
 	public ArrayList<Element> getBlocks() {
-		return blocks;
+		return blocks2;
 	}
 	
-	public void addElement(Element elem) {
-		System.out.println(elem);
+	public void addElement(Element elem) {		
 		blocks.add(elem);
+	}
+	
+	public void addElement2(Element elem) {		
+		blocks2.add(elem);
 	}
 	
 	public void removeElement(Element elem) {
@@ -67,7 +71,6 @@ public class Stage {
 			fator = 4;
 		PieceL aux = new PieceL(gs, fator, "red.png");
 		this.addElement(aux);		
-		System.out.println(this.blocks.size());
 	}
 	
 	public int[][] getActualMatrix() {
@@ -101,10 +104,10 @@ public class Stage {
 			}
 		}
 		for(int i = 0; i < blocks.size(); i++) {
-			blocks.get(i).corrigePeca(row);
+			blocks2.get(i).corrigePeca(row);
 		}
 		for(int i = 0; i < blocks.size(); i++) {
-			blocks.get(i).moveDown(this.getActualMatrix());
+			blocks2.get(i).moveDown(this.getActualMatrix());
 		}
 	}
 }

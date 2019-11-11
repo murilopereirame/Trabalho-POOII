@@ -19,15 +19,11 @@ public abstract class Element implements Serializable{
     protected ArrayList<Lolo> pieces = new ArrayList<Lolo>();
 	protected int position = 0;
     protected ImageIcon imageIcon;
-    protected Position pos;
-    protected boolean isTransposable; // Pode passar por cima?
-    protected boolean isMortal;       // Se encostar, morre?   
+    protected Position pos;  
     private boolean gameOver = false;
     
     public Element(String imageName) {
         this.pos = new Position(1, 1);
-        this.isTransposable = true;
-        this.isMortal = false;
         
         try {
             imageIcon = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.IMG_PATH + imageName);
@@ -68,24 +64,18 @@ public abstract class Element implements Serializable{
         return pos.setPosition(x, y);
     }
 
-    public boolean isTransposable() {
-        return isTransposable;
-    }
-
-    public void setTransposable(boolean isTransposable) {
-        this.isTransposable = isTransposable;
-    }
-    
-    public boolean isMortal() {
-        return isMortal;
-    }
 
     abstract public void autoDraw(Graphics g);
 
     public boolean moveDown(int matrix[][]) {
     	if(position == 0) {
-    		int downX = pieces.get(pieces.size() - 1).getX();
-    		int downY = pieces.get(pieces.size() - 1).getY();
+    		int size = pieces.size() - 1;
+    		
+    		if(size < 0)
+    			return false;
+    		
+    		int downX = pieces.get(size).getX();
+    		int downY = pieces.get(size).getY();
     		System.out.println(downY);
     		
     		if((downX + 1 == Consts.NUM_ROW) || (downY + 1 == Consts.NUM_COL+1))

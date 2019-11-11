@@ -15,7 +15,7 @@ public class PieceL extends Element{
     
     public PieceL(GameScreen s, int fator, String imageName) {
     	super(imageName);
-    	//Peça central 1X1
+    	//Peï¿½a central 1X1
     	
     	elems[0][1] = 1;
     	elems[1][1] = 1;
@@ -38,18 +38,11 @@ public class PieceL extends Element{
     				Lolo l1;
     				l1 = new Lolo("red.png");
     		    	l1.setPosition(i-fator, j);
-    		    	l1.setTransposable(false);
     		    	pieces.add(l1);
     			}
     		}
     	}
     	
-    	//Ao completar a linha, varre o array e remove todos os "pixeis" dos objetos na linha
-    	//Como saber se a linha está cheia?
-    	System.out.println(pieces);
-    	System.out.println(s);
-    	System.out.println(cX);
-    	System.out.println(pieces.get(cX));
     	s.addElement(pieces.get(cX));
     	for(int i = 0; i < pieces.size(); i++) {
     		if(i != cX)

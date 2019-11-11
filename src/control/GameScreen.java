@@ -35,19 +35,15 @@ public class GameScreen extends javax.swing.JFrame implements KeyListener {
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.NUM_COL * Consts.CELL_SIZE + getInsets().left + getInsets().right,
                      Consts.NUM_ROW * Consts.CELL_SIZE + getInsets().top + getInsets().bottom);
-        System.out.println("dsad");
         stage1 = new Stage(this);
         stage1.init();
-        System.out.println(stage1);
         /*Skull skull = new Skull("caveira.png");
         skull.setPosition(9, 1);
         this.addElement(skull);  */
     }
     
     public void addElement(Element elem) {
-    	System.out.println(elem);
-    	System.out.println(stage1);
-        stage1.addElement(elem);
+        stage1.addElement2(elem);
     }
     
     public void removeElement(Element elem) {
